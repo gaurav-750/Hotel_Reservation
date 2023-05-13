@@ -28,7 +28,7 @@ class Room(models.Model):
     image = models.ImageField(upload_to='room_images/', blank=True, null=True)
 
     def __str__(self) -> str:
-        return self.number + " " + self.type
+        return str(self.number) + " " + self.type
 
 
 class Reservation(models.Model):
@@ -37,13 +37,13 @@ class Reservation(models.Model):
                              on_delete=models.CASCADE)
     CheckIn = models.DateField()
     Checkout = models.DateField()
-    SpecialRequest = models.TextField()
+    SpecialRequest = models.TextField(null=True, blank=True)
     Cancelled = models.BooleanField(default=False)
     PaymentID = models.CharField(max_length=100, null=True, blank=True)
     TotalPrice = models.IntegerField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.Room.number + " " + self.User.username
+        return str(self.Room.number) + " " + self.User.username
 
 
 class Customer(models.Model):

@@ -5,8 +5,8 @@ from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 
-from .serializers import RoomSerializer
-from .models import Room
+from .serializers import RoomSerializer, ReservationSerializer
+from .models import Room, Reservation, Customer
 
 
 # Create your views here
@@ -36,3 +36,8 @@ class RoomView(ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReservationView(ListCreateAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
