@@ -25,6 +25,34 @@ class Room(models.Model):
     balcony = models.BooleanField(default=False)
     parking = models.BooleanField(default=True)
 
-    # image = models.ImageField(upload_to='my-images', blank=True, null=True)
-    # image = models.URLField(blank=True, null=True)
     image = models.ImageField(upload_to='room_images/', blank=True, null=True)
+
+    def __str__(self) -> str:
+        return self.number + " " + self.type
+
+
+class Reservation(models.Model):
+    Room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    User = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    CheckIn = models.DateField()
+    Checkout = models.DateField()
+    SpecialRequest = models.TextField()
+    Cancelled = models.BooleanField(default=False)
+    PaymentID = models.CharField(max_length=100, null=True, blank=True)
+    TotalPrice = models.IntegerField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.Room.number + " " + self.User.username
+
+
+class Customer(models.Model):
+    User = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    mobile = models.CharField(max_length=20)
+    dob = models.DateField()
+    aadhar_id = models.CharField(max_length=20)
+    address = models.TextField()
+
+    def __str__(self) -> str:
+        return self.User.username
