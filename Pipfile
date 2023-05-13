@@ -11,6 +11,8 @@ djangorestframework = "*"
 pillow = "*"
 django-cloudinary-storage = "*"
 django-environ = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
