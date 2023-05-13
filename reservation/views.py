@@ -1,11 +1,14 @@
 import cloudinary.uploader
 
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.decorators import action
 
-from .serializers import RoomSerializer, ReservationSerializer
+from .serializers import RoomSerializer, ReservationSerializer, CustomerSerializer
 from .models import Room, Reservation, Customer
 
 
@@ -41,3 +44,21 @@ class RoomView(ListCreateAPIView):
 class ReservationView(ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+
+
+class CustomerViewSet(ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAdminUser]
+
+    @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
+    def me(self, req):
+        (customer, created) = Customer.objects.get_or_create(User_id=req.user.id)
+        if req.method == 'GET':
+            serializer = CustomerSerializer(customer)
+            return Response(serializer.data)
+        elif req.method == 'PUT':
+            serializer = CustomerSerializer(customer, data=req.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)

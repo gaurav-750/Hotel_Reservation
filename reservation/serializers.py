@@ -26,3 +26,10 @@ class ReservationSerializer(serializers.ModelSerializer):
         model = Reservation
         fields = ['id', 'Room', 'User', 'CheckIn', 'Checkout',
                   'SpecialRequest', 'Cancelled', 'PaymentID', 'TotalPrice']
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Customer
+        fields = ['id', 'User', 'mobile', 'dob', 'aadhar_id', 'address']

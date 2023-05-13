@@ -13,6 +13,7 @@ django-cloudinary-storage = "*"
 django-environ = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 
