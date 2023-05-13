@@ -2,10 +2,10 @@ import cloudinary.uploader
 
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListCreateAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 
 from .serializers import RoomSerializer, ReservationSerializer, CustomerSerializer
@@ -17,6 +17,13 @@ class RoomView(ListCreateAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     parser_classes = [MultiPartParser, FormParser]
+    # permission_classes = [AllowAny]
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAdminUser()]
+        else:
+            return [AllowAny()]
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -39,6 +46,17 @@ class RoomView(ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RoomDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        else:
+            return [IsAdminUser()]
 
 
 class ReservationView(ListCreateAPIView):
