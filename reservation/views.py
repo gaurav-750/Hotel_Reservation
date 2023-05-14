@@ -1,14 +1,16 @@
 import cloudinary.uploader
 
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.decorators import action
+from rest_framework.mixins import ListModelMixin, DestroyModelMixin
 
-from .serializers import RoomSerializer, ReservationSerializer, CustomerSerializer
+from .serializers import RoomSerializer, ReservationSerializer, \
+    CustomerSerializer, MyBookingSerializer
 from .models import Room, Reservation, Customer
 
 
@@ -37,7 +39,6 @@ class RoomView(ListCreateAPIView):
                 upload_result = cloudinary.uploader.upload(
                     image, folder="room_images/")
                 image_url = upload_result['secure_url']
-
                 # set cludinary image url to serializer
                 serializer.validated_data['image'] = image_url
 
@@ -80,3 +81,12 @@ class CustomerViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
+
+
+class GetMyBookings(ListModelMixin,
+                    DestroyModelMixin,
+                    GenericViewSet):
+    def get_queryset(self):
+        return Reservation.objects.filter(User_id=self.request.user.id)
+    serializer_class = MyBookingSerializer
+    permission_classes = [IsAuthenticated]
