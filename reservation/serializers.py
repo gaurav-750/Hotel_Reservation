@@ -33,21 +33,3 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['id', 'User', 'mobile', 'dob', 'aadhar_id', 'address']
-
-
-class SimpleRoomSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Room
-        fields = ['id', 'type', 'number', 'pricePerNight',
-                  'size', 'maxOccupancy', 'description', 'balcony',
-                  'image',]
-
-
-class MyBookingSerializer(serializers.ModelSerializer):
-    Room = SimpleRoomSerializer()
-
-    class Meta:
-        model = Reservation
-        fields = ['id', 'Room', 'CheckIn', 'Checkout',
-                  'SpecialRequest', 'Cancelled', 'PaymentID', 'TotalPrice']
