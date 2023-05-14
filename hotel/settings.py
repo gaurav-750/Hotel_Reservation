@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+
 import cloudinary
 import environ
+import os
+import dj_database_url
 
-from datetime import timedelta
 
 # Initialise environment variables
 env = environ.Env()
@@ -28,7 +31,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-aocil02z^#4_9cnq60)6k_x!0jq_c#**@^ui=4vgup0!mr#)q9'
+SECRET_KEY = os.getenv('SECRET_KEY')
+MYSQL_URL = os.getenv('MYSQL_URL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary_storage',
     'djoser',
+    'drf_yasg',
 
     # local
     'core',
@@ -90,14 +95,9 @@ WSGI_APPLICATION = 'hotel.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hotel',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': 'pass123'
-    }
+    'default': dj_database_url.config(default=MYSQL_URL)
 }
 
 
@@ -162,7 +162,7 @@ REST_FRAMEWORK = {
     'COERCE_DECIMAL_TO_STRING': False,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
 }
 
 

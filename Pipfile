@@ -14,6 +14,10 @@ django-environ = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 drf-nested-routers = "*"
+django-rest-swagger = "*"
+drf-spectacular = "*"
+drf-yasg = "*"
+dj-database-url = "*"
 
 [dev-packages]
 

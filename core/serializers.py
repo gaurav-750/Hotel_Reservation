@@ -18,3 +18,4 @@ class UserSerializer(BaseUS):
     class Meta(BaseUS.Meta):
         fields = ['id', 'username', 'email',
                   'first_name', 'last_name']
+        ref_name = "DjoserUser"  # explicitly set the ref_name attribute
