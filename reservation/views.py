@@ -64,6 +64,7 @@ class RoomDetailView(RetrieveUpdateDestroyAPIView):
 class ReservationView(ListAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+    permission_classes = [IsAdminUser]
 
 
 class CustomerViewSet(ModelViewSet):
