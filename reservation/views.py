@@ -1,4 +1,6 @@
 import cloudinary.uploader
+import environ
+import razorpay
 
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -8,10 +10,23 @@ from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, DestroyModelMixin
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 
 from .serializers import RoomSerializer, ReservationSerializer, \
     CustomerSerializer, MyBookingSerializer
 from .models import Room, Reservation, Customer
+
+
+# from .models import Order
+# from .serializers import OrderSerializer
+
+env = environ.Env()
+
+# you have to create .env file in same folder where you are using environ.Env()
+# reading .env file which located in api folder
+environ.Env.read_env()
 
 
 # Create your views here

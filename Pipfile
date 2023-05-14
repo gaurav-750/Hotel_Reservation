@@ -21,6 +21,7 @@ dj-database-url = "*"
 gunicorn = "*"
 whitenoise = "*"
 django-cors-headers = "*"
+razorpay = "*"
 
 [dev-packages]
 
