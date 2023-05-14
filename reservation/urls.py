@@ -14,6 +14,6 @@ urlpatterns = [
     path('rooms/<int:pk>/', RoomDetailView.as_view()),
     path('reservations/', ReservationView.as_view()),
 
-    path('pay/', start_payment, name="payment"),
+    # path('pay/', start_payment, name="payment"),
     # path('payment/success/', handle_payment_success, name="payment_success"),
 ]
