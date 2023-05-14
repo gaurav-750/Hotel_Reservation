@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    User = UserSerializer()
+    User = UserSerializer(read_only=True)
 
     class Meta:
         model = Reservation
